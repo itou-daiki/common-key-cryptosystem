@@ -1,31 +1,58 @@
-# Streamlitライブラリをインポート
 import streamlit as st
 
-# ページ設定（タブに表示されるタイトル、表示幅）
-st.set_page_config(page_title="タイトル", layout="wide")
+def caesar_encrypt(text, shift):
+    result = ""
+    for char in text:
+        if char.isalpha():
+            ascii_offset = 65 if char.isupper() else 97
+            result += chr((ord(char) - ascii_offset + shift) % 26 + ascii_offset)
+        else:
+            result += char
+    return result
 
-# タイトルを設定
-st.title('Streamlitのサンプルアプリ')
+def caesar_decrypt(text, shift):
+    return caesar_encrypt(text, -shift)
 
-# テキスト入力ボックスを作成し、ユーザーからの入力を受け取る
-user_input = st.text_input('あなたの名前を入力してください')
+st.set_page_config(page_title="シーザー暗号体験", layout="wide")
 
-# ボタンを作成し、クリックされたらメッセージを表示
-if st.button('挨拶する'):
-    if user_input:  # 名前が入力されているかチェック
-        st.success(f'🌟 こんにちは、{user_input}さん! 🌟')  # メッセージをハイライト
-    else:
-        st.error('名前を入力してください。')  # エラーメッセージを表示
+st.title("シーザー暗号体験")
 
-# スライダーを作成し、値を選択
-number = st.slider('好きな数字（10進数）を選んでください', 0, 100)
+tab1, tab2, tab3 = st.tabs(["鍵生成", "暗号化", "復号"])
 
-# 補足メッセージ
-st.caption("十字キー（左右）でも調整できます。")
+with tab1:
+    st.subheader("鍵生成")
+    st.write("シーザー暗号では、シフト値を鍵として使用します。")
+    st.write("1から25までの数字をシフト値（鍵）として選んでください。")
 
-# 選択した数字を表示
-st.write(f'あなたが選んだ数字は「{number}」です。')
+    shift = st.number_input("シフト値（1-25）を入力してください：", min_value=1, max_value=25, value=3, key="key_gen")
 
-# 選択した数値を2進数に変換
-binary_representation = bin(number)[2:]  # 'bin'関数で2進数に変換し、先頭の'0b'を取り除く
-st.info(f'🔢 10進数の「{number}」を2進数で表現すると「{binary_representation}」になります。 🔢')  # 2進数の表示をハイライト
+    st.success(f"生成された鍵（シフト値）は：{shift}")
+    st.write("この鍵を覚えておいてください。暗号化と復号の両方で必要になります。")
+
+with tab2:
+    st.subheader("暗号化")
+    
+    plaintext = st.text_input("暗号化したいテキストを入力してください：")
+    shift_encrypt = st.number_input("シフト値（鍵）を入力してください：", min_value=1, max_value=25, value=3, key="encrypt")
+
+    if st.button("暗号化実行"):
+        if plaintext:
+            encrypted_text = caesar_encrypt(plaintext, shift_encrypt)
+            st.success("暗号化されたテキスト：")
+            st.write(encrypted_text)
+        else:
+            st.error("暗号化するテキストを入力してください。")
+
+with tab3:
+    st.subheader("復号")
+
+    ciphertext = st.text_input("復号したい暗号文を入力してください：")
+    shift_decrypt = st.number_input("シフト値（鍵）を入力してください：", min_value=1, max_value=25, value=3, key="decrypt")
+
+    if st.button("復号実行"):
+        if ciphertext:
+            decrypted_text = caesar_decrypt(ciphertext, shift_decrypt)
+            st.success("復号されたテキスト：")
+            st.write(decrypted_text)
+        else:
+            st.error("復号するテキストを入力してください。")
