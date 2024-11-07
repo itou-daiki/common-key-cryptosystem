@@ -13,25 +13,15 @@ def caesar_encrypt(text, shift):
 def caesar_decrypt(text, shift):
     return caesar_encrypt(text, -shift)
 
-st.set_page_config(page_title="シーザー暗号体験", layout="wide")
+st.set_page_config(page_title="共通鍵暗号体験（シーザー暗号体験）", layout="wide")
 
-st.title("シーザー暗号体験")
+st.title("共通鍵暗号体験（シーザー暗号体験）")
 st.write("")
-st.subheader("ブラウザでシーザー暗号の「鍵生成」→「暗号化」→「復号」まで体験することができます")
+st.subheader("ブラウザでシーザー暗号の「暗号化」→「復号」まで体験することができます")
 
-tab1, tab2, tab3 = st.tabs(["鍵生成", "暗号化", "復号"])
+tab1, tab2 = st.tabs([ "暗号化", "復号"])
 
 with tab1:
-    st.subheader("鍵生成")
-    st.write("シーザー暗号では、シフト値を鍵として使用します。")
-    st.write("1から25までの数字をシフト値（鍵）として選んでください。")
-
-    shift = st.number_input("シフト値（1-25）を入力してください：", min_value=1, max_value=25, value=3, key="key_gen")
-
-    st.success(f"生成された鍵（シフト値）は：{shift}")
-    st.write("この鍵を覚えておいてください。暗号化と復号の両方で必要になります。")
-
-with tab2:
     st.subheader("暗号化")
     
     plaintext = st.text_input("暗号化したいテキストを入力してください（半角アルファベットのみ）：")
@@ -47,7 +37,7 @@ with tab2:
         else:
             st.error("暗号化するテキストを入力してください。")
 
-with tab3:
+with tab2:
     st.subheader("復号")
 
     ciphertext = st.text_input("復号したい暗号文を入力してください（半角アルファベットのみ）：")
