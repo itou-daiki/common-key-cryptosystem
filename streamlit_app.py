@@ -39,7 +39,7 @@ with tab1:
             if is_valid_input(plaintext):
                 encrypted_text = caesar_encrypt(plaintext, shift_encrypt)
                 st.success("暗号化されたテキスト："+encrypted_text)
-                st.subheader("「ステップ２：複号」タブに進み、暗号文を入力し、復号を行ってください")
+                st.write("暗号文をコピーし、「ステップ２：復号」タブに進み、暗号文を入力し、復号を行ってください")
             else:
                 st.error("エラー：入力は半角アルファベット（A-Z, a-z）のみを使用してください。")
         else:
