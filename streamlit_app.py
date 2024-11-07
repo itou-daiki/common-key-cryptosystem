@@ -41,7 +41,7 @@ with tab2:
     st.subheader("復号")
 
     ciphertext = st.text_input("復号したい暗号文を入力してください（半角アルファベットのみ）：")
-    shift_decrypt = st.number_input("シフト値（鍵）を入力してください：", min_value=1, max_value=25, value=3, key="decrypt")
+    shift_decrypt = st.number_input("シフト値（鍵）を入力してください：", min_value=1, max_value=25, value=shift_encrypt, key="decrypt")
 
     if st.button("復号実行"):
         if ciphertext:
